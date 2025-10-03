@@ -28,7 +28,7 @@ A modern personal portfolio website built with **Next.js** and **TypeScript**, s
 
 ## 📂 Project Structure
 
-```
+\`\`\`
 /
 ├── components/     # Reusable UI components
 ├── pages/          # Next.js pages
@@ -37,7 +37,7 @@ A modern personal portfolio website built with **Next.js** and **TypeScript**, s
 ├── utils/          # Helper functions (if any)
 ├── types/          # TypeScript types & interfaces
 └── README.md       # Project documentation
-```
+\`\`\`
 
 ---
 
@@ -49,7 +49,7 @@ A modern personal portfolio website built with **Next.js** and **TypeScript**, s
 
 ### Run Locally
 
-```bash
+\`\`\`bash
 # Clone the repo
 git clone https://github.com/your-username/portfolio.git
 
@@ -65,7 +65,7 @@ yarn install
 npm run dev
 # or
 yarn dev
-```
+\`\`\`
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
