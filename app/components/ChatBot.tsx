@@ -19,7 +19,7 @@ const responses = {
   ],
 
   about: [
-    "I am a Web Developer, and Passionate about Mathematics from Bikaner, Rajasthan, India. I completed B.Tech in CSE at PES Institute of Technology and Management with a CGPA of 8.95. I specialize in building next-generation applications with Fullstack technologies and API integrations.",
+    "I am a Web Developer, and Passionate about Mathematics from Bikaner, Rajasthan, India. I completed B.Tech in CSE at PES Institute of Technology and Management with a CGPA of 9.10. I specialize in building next-generation applications with Fullstack technologies and API integrations.",
   ],
 
   experience: [
