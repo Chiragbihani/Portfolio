@@ -1,14 +1,14 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Send, Volume2, VolumeX, Minimize2, Maximize2, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import { smoothScrollTo } from "@/utils/smoothScroll"
+import Fuse from "fuse.js"
 
 // Static responses database
 const responses = {
@@ -23,7 +23,7 @@ const responses = {
   ],
 
   experience: [
-    "Chirag is currently working as a Trainee Engineer at Eton Solutions in Bengaluru since December 2024, where he's undergoing comprehensive full-stack development training and gaining hands-on experience in professional software engineering. Previously, he worked as a Software Developer at Vulcan Academy (Feb-Jun 2025) overseeing website development and team management, and as a Subject Master Expert at Vedantu (May-Aug 2023) solving JEE mathematics doubts for students.",
+    "Chirag is currently working as a Trainee Engineer at Eton Solutions in Bengaluru since July 2025, where he's undergoing comprehensive full-stack development training and gaining hands-on experience in professional software engineering. Previously, he worked as a Software Developer at Vulcan Academy (Feb-Jun 2025) overseeing website development and team management, and as a Subject Master Expert at Vedantu (May-Aug 2023) solving JEE mathematics doubts for students.",
   ],
 
   birthday_info: ["Chirag's birthday is on 6th-Feb-2003."],
@@ -39,7 +39,7 @@ const responses = {
   ],
 
   education: [
-    "Chirag completed his B.Tech in Computer Science & Engineering at PES Institute of Technology & Management (2021-2025) with an impressive CGPA of 8.95. He completed his Intermediate from Shiksha High School, Bikaner with 81.40% and his 10th grade from Bikaner Boys' School with 89.40%.",
+    "Chirag completed his B.Tech in Computer Science & Engineering at PES Institute of Technology & Management (2021-2025) with an impressive CGPA of 9.10. He completed his Intermediate from Shiksha High School, Bikaner with 81.40% and his 10th grade from Bikaner Boys' School with 89.40%.",
   ],
 
   certifications: [
@@ -67,12 +67,12 @@ const responses = {
   ],
 }
 
-// Keywords mapping
+// Enhanced keywords mapping with more comprehensive coverage
 const keywordMap = {
-  greeting: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening"],
-  about: ["about", "who", "introduction", "background", "tell me about", "describe"],
+  greeting: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening", "howdy"],
+  about: ["about", "who", "introduction", "background", "tell me about", "describe", "info", "information","tell me about him", "i want to know about him","what is his name"],
   experience: [
-    "experience",
+    "experience","his experience","his career","i want to know about his experience", "tell me about his career", "tell me about his experience", "what is his experience","chirag's experience"
     "work",
     "job",
     "career",
@@ -82,19 +82,93 @@ const keywordMap = {
     "professional",
     "eton",
     "trainee",
+    "vulcan",
+    "vedantu",
+    "workplace",
+    "company",
+    "employer",
   ],
-  skills: ["skills", "technologies", "tech stack", "programming", "languages", "frameworks", "abilities", "expertise"],
-  projects: ["projects", "portfolio", "work samples", "applications", "development", "built", "created"],
-  education: ["education", "degree", "university", "college", "academic", "study", "qualification"],
-  certifications: ["certifications", "certificates", "credentials", "achievements", "awards"],
-  contact: ["contact", "reach", "phone", "connect", "contact information", "get in touch", "reach out"],
-  resume: ["resume", "cv", "curriculum vitae", "download resume"],
-  github: ["github", "git", "code", "repository", "repos"],
-  email: ["email", "mail", "send email"],
-  linkedin: ["linkedin", "professional network"],
-  languages: ["languages", "speak", "linguistic", "communication"],
-  BMI_info: ["height", "length", "body type", "BMI"],
-  birthday_info: ["birthday", "birth day", "bday", "born year"],
+  skills: [
+    "skills","what are the skills of him", "tell me about his skills", "what are the skillset of chirag", "what is the expertise of chirag","how much skills he has","what technologies he works on", "what techstack he is well versed with"
+    "technologies",
+    "tech stack",
+    "programming",
+    "languages",
+    "frameworks",
+    "abilities",
+    "expertise",
+    "technical",
+    "coding",
+    "development",
+    "tools",
+    "techstack",
+  ],
+  projects: [
+    "projects",
+    "portfolio",
+    "work samples",
+    "applications",
+    "development",
+    "built",
+    "created",
+    "apps",
+    "websites",
+    "code",
+    "github projects","what are the projects of chirag","show me the projects of him","tell me about his projects", "i want to know about his projects"
+  ],
+  education: [
+    "education",
+    "degree",
+    "university",
+    "college",
+    "academic",
+    "study",
+    "qualification",
+    "school",
+    "btech",
+    "b.tech",
+    "bachelor",
+    "graduation",
+    "cgpa",
+    "marks",
+    "percentage",
+    "educational",
+    "academics",
+    "learning",
+    "studied",
+    "institute",
+    "pesitm","what is chirag's education","his education", "tell me about his education","i want to know about his education"
+  ],
+  certifications: [
+    "certifications","his certificatons","what certifications he has done","tell me about his certifications","his courses",
+    "certificates",
+    "credentials",
+    "achievements",
+    "awards",
+    "certified",
+    "certification",
+    "course",
+    "training",
+  ],
+  contact: [
+    "contact","what is his contact","his contact","how can i contact him","i want to contact him","what is his contact","how can i reach out to him","how can i get in touch with him","i want to reach out to him","i want to connect with him"
+    "reach",
+    "phone",
+    "connect",
+    "contact information",
+    "get in touch",
+    "reach out",
+    "call",
+    "message",
+    "communicate",
+  ],
+  resume: ["resume", "cv", "curriculum vitae", "download resume", "download cv","i want to see his resume","give me his resume","his resume","his CV","I want to download his resume","take me through his resume"],
+  github: ["github", "git", "code", "repository", "repos", "source code","i want to check his github profile","take me through his github repos","take me to his github account"],
+  email: ["email", "mail", "send email", "e-mail", "gmail","i want to send him a email","his email","his mail id","his email id ","his email account","i want to connect to him with email","what is his email","what is his email id","what is his mail id"],
+  linkedin: ["linkedin", "professional network", "connect linkedin","i want to check his linkedin account","i want to check his linkedin profile","what is his linkedin profile","take me to his linkedin account","show me his linkedin profile"],
+  languages: ["languages", "speak", "linguistic", "communication", "hindi", "english", "kannada","what languages he speaks","what all languages he know","which language he speaks","which languages he is proficient with "],
+  BMI_info: ["height", "length", "body type", "BMI", "tall", "physical","what is his height","his height"],
+  birthday_info: ["birthday", "birth day", "bday", "born year", "age", "birth date","his birthday","what is his birthday","tell me about his birthday","tell me about his born date","what is his birth date"],
 }
 
 // Links database
@@ -269,6 +343,32 @@ export default function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
 
+  // Create Fuse instance for fuzzy search
+  const fuse = useMemo(() => {
+    type Doc = { id: string; category: string; text: string; keywords?: string }
+    const docs: Doc[] = (Object.entries(responses) as [string, string[]][]).flatMap(([category, arr]) =>
+      arr.map((text, idx) => ({
+        id: `${category}-${idx}`,
+        category,
+        text,
+        keywords: (keywordMap as Record<string, string[]>)?.[category]?.join(" ") ?? "",
+      })),
+    )
+
+    return new Fuse(docs, {
+      keys: [
+        { name: "keywords", weight: 0.7 },
+        { name: "category", weight: 0.2 },
+        { name: "text", weight: 0.1 },
+      ],
+      includeScore: true,
+      threshold: 0.4, // Slightly more lenient for better matching
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+      findAllMatches: true,
+    })
+  }, [])
+
   // Check voice support on mount
   useEffect(() => {
     const checkVoiceSupport = () => {
@@ -287,7 +387,7 @@ export default function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  // Function to find best matching response
+  // Enhanced function to find best matching response using Fuse.js
   const findBestResponse = (
     userInput: string,
   ): {
@@ -297,57 +397,131 @@ export default function ChatBot() {
     isProjectRedirect?: boolean
     additionalLinks?: Array<{ url: string; text: string }>
   } => {
-    const input = userInput.toLowerCase()
+    const input = userInput.trim().toLowerCase()
+    if (!input) return { text: responses.default[Math.floor(Math.random() * responses.default.length)] }
+
+    // Enhanced explicit-intent short-circuit for high-value intents
+    const explicitMap: Record<string, string> = {
+      resume: "resume",
+      cv: "resume",
+      github: "github",
+      repo: "github",
+      email: "email",
+      mail: "email",
+      linkedin: "linkedin",
+      contact: "contact",
+      project: "projects",
+      projects: "projects",
+      education: "education",
+      degree: "education",
+      college: "education",
+      university: "education",
+      school: "education",
+      academic: "education",
+      qualification: "education",
+    }
+
+    for (const token of Object.keys(explicitMap)) {
+      if (input.includes(token)) {
+        const cat = explicitMap[token]
+        const responseText = (responses as any)[cat]?.[0] ?? responses.default[0]
+        switch (cat) {
+          case "resume":
+            return { text: responseText, link: links.resume, linkText: "📄 Download Resume" }
+          case "github":
+            return { text: responseText, link: links.github, linkText: "🔗 View GitHub Profile" }
+          case "email":
+            return { text: responseText, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
+          case "linkedin":
+            return { text: responseText, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
+          case "contact":
+            return {
+              text: `${responseText}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
+              link: links.email,
+              linkText: "📧 Send Email",
+              additionalLinks: [
+                { url: links.phone, text: "📱 Call Now" },
+                { url: links.linkedin, text: "💼 LinkedIn Profile" },
+                { url: links.github, text: "🔗 GitHub Profile" },
+              ],
+            }
+          case "projects":
+            return { text: responseText, isProjectRedirect: true }
+          case "education":
+            return { text: responseText }
+        }
+      }
+    }
+
+    // Fuse fuzzy search with improved scoring
+    const results = fuse.search(input, { limit: 10 })
+    console.log("Search results for:", input, results) // Debug log
+
+    if (results.length > 0 && typeof results[0].score === "number" && results[0].score <= 0.6) {
+      const matched = results[0].item
+      const category = matched.category
+      const candidate = (responses as any)[category] ?? responses.default
+      const chosen = candidate[Math.floor(Math.random() * candidate.length)]
+
+      console.log("Matched category:", category, "Score:", results[0].score) // Debug log
+
+      // Reuse same linking logic for categories that need links
+      switch (category) {
+        case "resume":
+          return { text: chosen, link: links.resume, linkText: "📄 Download Resume" }
+        case "github":
+          return { text: chosen, link: links.github, linkText: "🔗 View GitHub Profile" }
+        case "email":
+          return { text: chosen, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
+        case "linkedin":
+          return { text: chosen, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
+        case "contact":
+          return {
+            text: `${chosen}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
+            link: links.email,
+            linkText: "📧 Send Email",
+            additionalLinks: [
+              { url: links.phone, text: "📱 Call Now" },
+              { url: links.linkedin, text: "💼 LinkedIn Profile" },
+              { url: links.github, text: "🔗 GitHub Profile" },
+            ],
+          }
+        case "projects":
+          return { text: chosen, isProjectRedirect: true }
+        default:
+          return { text: chosen }
+      }
+    }
+
+    // Enhanced fallback: robust keyword count with better scoring
     let bestMatch = "default"
     let maxMatches = 0
-
-    // Check for keyword matches
     Object.entries(keywordMap).forEach(([category, keywords]) => {
-      const matches = keywords.filter((keyword) => input.includes(keyword)).length
+      const matches = keywords.filter((k) => input.includes(k.toLowerCase())).length
       if (matches > maxMatches) {
         maxMatches = matches
         bestMatch = category
       }
     })
 
-    // Get response from the matched category
-    const categoryResponses = responses[bestMatch as keyof typeof responses]
-    const responseText = categoryResponses[Math.floor(Math.random() * categoryResponses.length)]
+    console.log("Fallback matched category:", bestMatch, "Matches:", maxMatches) // Debug log
 
-    // Handle special cases with links
+    const fallbackArr = (responses as any)[bestMatch] ?? responses.default
+    const fallbackText = fallbackArr[Math.floor(Math.random() * fallbackArr.length)]
+
+    // Apply same linking logic for fallback results
     switch (bestMatch) {
       case "resume":
-        return {
-          text: responseText,
-          link: links.resume,
-          linkText: "📄 Download Resume",
-        }
+        return { text: fallbackText, link: links.resume, linkText: "📄 Download Resume" }
       case "github":
-        return {
-          text: responseText,
-          link: links.github,
-          linkText: "🔗 View GitHub Profile",
-        }
+        return { text: fallbackText, link: links.github, linkText: "🔗 View GitHub Profile" }
       case "email":
-        return {
-          text: responseText,
-          link: links.email,
-          linkText: "📧 chiragbihani131206@gmail.com",
-        }
+        return { text: fallbackText, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
       case "linkedin":
-        return {
-          text: responseText,
-          link: links.linkedin,
-          linkText: "🔗 Connect on LinkedIn",
-        }
+        return { text: fallbackText, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
       case "contact":
         return {
-          text: `${responseText}
-
-📧 Email: chiragbihani131206@gmail.com
-📱 Phone: +91 7726823592  
-💼 LinkedIn: Professional Profile
-🔗 GitHub: Code Repository`,
+          text: `${fallbackText}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
           link: links.email,
           linkText: "📧 Send Email",
           additionalLinks: [
@@ -357,13 +531,9 @@ export default function ChatBot() {
           ],
         }
       case "projects":
-        return {
-          text: responseText,
-          isProjectRedirect: true,
-        }
-
+        return { text: fallbackText, isProjectRedirect: true }
       default:
-        return { text: responseText }
+        return { text: fallbackText }
     }
   }
 
@@ -565,11 +735,11 @@ export default function ChatBot() {
 
   // Suggested questions
   const suggestedQuestions = [
-    "Tell me about his current job",
-    "What are his technical skills?",
+    "What is his education?",
+    "Tell me about his skills",
     "How can I contact him?",
-    "Can I get his resume?",
-    "What's his GitHub profile?",
+    "Show me his projects",
+    "What's his experience?",
   ]
 
   return (
