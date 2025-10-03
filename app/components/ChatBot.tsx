@@ -507,7 +507,7 @@ export default function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  // Enhanced function to find best matching response using multiple strategies
+  // Enhanced function to find best matching response using improved keyword scoring
   const findBestResponse = (
     userInput: string,
   ): {
@@ -520,88 +520,39 @@ export default function ChatBot() {
     const input = userInput.trim().toLowerCase()
     if (!input) return { text: responses.default[Math.floor(Math.random() * responses.default.length)] }
 
-    console.log("🔍 Processing input:", input)
+    // Tokenize input, remove punctuation
+    const inputTokens = input
+      .replace(/[^\w\s]/g, "")
+      .split(/\s+/)
+      .filter(Boolean)
 
-    // Strategy 1: Direct keyword matching (most reliable)
+    // Score each category by number of keyword matches
     let bestMatch = "default"
-    let maxMatches = 0
-    let matchedKeywords: string[] = []
+    let maxScore = 0
 
     Object.entries(keywordMap).forEach(([category, keywords]) => {
-      const matches = keywords.filter((keyword) => {
-        const keywordLower = keyword.toLowerCase()
-        return input.includes(keywordLower)
-      })
-
-      if (matches.length > maxMatches) {
-        maxMatches = matches.length
+      let score = 0
+      for (const keyword of keywords) {
+        // Tokenize keyword for multi-word phrases
+        const keywordTokens = keyword.toLowerCase().split(/\s+/)
+        // If all tokens in keyword are present in inputTokens, count as a match
+        if (keywordTokens.every((kt) => inputTokens.includes(kt))) {
+          score++
+        }
+      }
+      if (score > maxScore) {
+        maxScore = score
         bestMatch = category
-        matchedKeywords = matches
       }
     })
 
-    console.log("🎯 Direct keyword match:", bestMatch, "Matches:", maxMatches, "Keywords:", matchedKeywords)
-
-    // Strategy 2: Enhanced explicit word detection
-    const explicitMatches: Record<string, string> = {
-      education: "education",
-      educational: "education",
-      educate: "education",
-      degree: "education",
-      college: "education",
-      university: "education",
-      school: "education",
-      academic: "education",
-      qualification: "education",
-      btech: "education",
-      "b.tech": "education",
-      bachelor: "education",
-      graduation: "education",
-      cgpa: "education",
-      institute: "education",
-      pesitm: "education",
-      resume: "resume",
-      cv: "resume",
-      github: "github",
-      repo: "github",
-      repository: "github",
-      email: "email",
-      mail: "email",
-      linkedin: "linkedin",
-      contact: "contact",
-      project: "projects",
-      projects: "projects",
-      skill: "skills",
-      skills: "skills",
-      experience: "experience",
-      work: "experience",
-      job: "experience",
-      career: "experience",
-    }
-
-    // Check for explicit matches
-    for (const [word, category] of Object.entries(explicitMatches)) {
-      if (input.includes(word)) {
-        console.log("✅ Explicit match found:", word, "->", category)
-        bestMatch = category
-        maxMatches = 10
-        break
-      }
-    }
-
-    // Strategy 3: Fuzzy search as fallback
-    if (maxMatches === 0) {
-      console.log("🔄 Trying fuzzy search...")
-      const results = fuse.search(input, { limit: 5 })
-      console.log("🔍 Fuzzy search results:", results)
-
+    // If no strong match, fallback to fuzzy search
+    if (maxScore === 0) {
+      const results = fuse.search(input, { limit: 3 })
       if (results.length > 0 && typeof results[0].score === "number" && results[0].score <= 0.6) {
         bestMatch = results[0].item.category
-        console.log("🎯 Fuzzy match:", bestMatch, "Score:", results[0].score)
       }
     }
-
-    console.log("🏆 Final category:", bestMatch)
 
     // Get response text
     const responseArray = (responses as any)[bestMatch] ?? responses.default
@@ -630,9 +581,6 @@ export default function ChatBot() {
         }
       case "projects":
         return { text: responseText, isProjectRedirect: true }
-      case "education":
-        console.log("🎓 Returning education response:", responseText)
-        return { text: responseText }
       default:
         return { text: responseText }
     }
