@@ -39,7 +39,7 @@ const responses = {
   ],
 
   education: [
-    "Chirag completed his B.Tech in Computer Science & Engineering at PES Institute of Technology & Management (2021-2025) with an impressive CGPA of 9.10. He completed his Intermediate from Shiksha High School, Bikaner with 81.40% and his 10th grade from Bikaner Boys' School with 89.40%.",
+    "Chirag completed his B.Tech in Computer Science & Engineering at PES Institute of Technology & Management (2021-2025) with an impressive CGPA of 8.95. He completed his Intermediate from Shiksha High School, Bikaner with 81.40% and his 10th grade from Bikaner Boys' School with 89.40%.",
   ],
 
   certifications: [
@@ -68,11 +68,30 @@ const responses = {
 }
 
 // Enhanced keywords mapping with more comprehensive coverage
-const keywordMap = {
+const keywordMap: Record<string, string[]> = {
   greeting: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening", "howdy"],
-  about: ["about", "who", "introduction", "background", "tell me about", "describe", "info", "information","tell me about him", "i want to know about him","what is his name"],
+  about: [
+    "about",
+    "who",
+    "introduction",
+    "background",
+    "tell me about",
+    "describe",
+    "info",
+    "information",
+    "tell me about him",
+    "i want to know about him",
+    "what is his name",
+  ],
   experience: [
-    "experience","his experience","his career","i want to know about his experience", "tell me about his career", "tell me about his experience", "what is his experience","chirag's experience"
+    "experience",
+    "his experience",
+    "his career",
+    "i want to know about his experience",
+    "tell me about his career",
+    "tell me about his experience",
+    "what is his experience",
+    "chirag's experience",
     "work",
     "job",
     "career",
@@ -89,7 +108,14 @@ const keywordMap = {
     "employer",
   ],
   skills: [
-    "skills","what are the skills of him", "tell me about his skills", "what are the skillset of chirag", "what is the expertise of chirag","how much skills he has","what technologies he works on", "what techstack he is well versed with"
+    "skills",
+    "what are the skills of him",
+    "tell me about his skills",
+    "what are the skillset of chirag",
+    "what is the expertise of chirag",
+    "how much skills he has",
+    "what technologies he works on",
+    "what techstack he is well versed with",
     "technologies",
     "tech stack",
     "programming",
@@ -114,7 +140,11 @@ const keywordMap = {
     "apps",
     "websites",
     "code",
-    "github projects","what are the projects of chirag","show me the projects of him","tell me about his projects", "i want to know about his projects"
+    "github projects",
+    "what are the projects of chirag",
+    "show me the projects of him",
+    "tell me about his projects",
+    "i want to know about his projects",
   ],
   education: [
     "education",
@@ -137,10 +167,18 @@ const keywordMap = {
     "learning",
     "studied",
     "institute",
-    "pesitm","what is chirag's education","his education", "tell me about his education","i want to know about his education"
+    "pesitm",
+    "what is chirag's education",
+    "his education",
+    "tell me about his education",
+    "i want to know about his education",
   ],
   certifications: [
-    "certifications","his certificatons","what certifications he has done","tell me about his certifications","his courses",
+    "certifications",
+    "his certificatons",
+    "what certifications he has done",
+    "tell me about his certifications",
+    "his courses",
     "certificates",
     "credentials",
     "achievements",
@@ -151,7 +189,15 @@ const keywordMap = {
     "training",
   ],
   contact: [
-    "contact","what is his contact","his contact","how can i contact him","i want to contact him","what is his contact","how can i reach out to him","how can i get in touch with him","i want to reach out to him","i want to connect with him"
+    "contact",
+    "what is his contact",
+    "his contact",
+    "how can i contact him",
+    "i want to contact him",
+    "how can i reach out to him",
+    "how can i get in touch with him",
+    "i want to reach out to him",
+    "i want to connect with him",
     "reach",
     "phone",
     "connect",
@@ -162,13 +208,83 @@ const keywordMap = {
     "message",
     "communicate",
   ],
-  resume: ["resume", "cv", "curriculum vitae", "download resume", "download cv","i want to see his resume","give me his resume","his resume","his CV","I want to download his resume","take me through his resume"],
-  github: ["github", "git", "code", "repository", "repos", "source code","i want to check his github profile","take me through his github repos","take me to his github account"],
-  email: ["email", "mail", "send email", "e-mail", "gmail","i want to send him a email","his email","his mail id","his email id ","his email account","i want to connect to him with email","what is his email","what is his email id","what is his mail id"],
-  linkedin: ["linkedin", "professional network", "connect linkedin","i want to check his linkedin account","i want to check his linkedin profile","what is his linkedin profile","take me to his linkedin account","show me his linkedin profile"],
-  languages: ["languages", "speak", "linguistic", "communication", "hindi", "english", "kannada","what languages he speaks","what all languages he know","which language he speaks","which languages he is proficient with "],
-  BMI_info: ["height", "length", "body type", "BMI", "tall", "physical","what is his height","his height"],
-  birthday_info: ["birthday", "birth day", "bday", "born year", "age", "birth date","his birthday","what is his birthday","tell me about his birthday","tell me about his born date","what is his birth date"],
+  resume: [
+    "resume",
+    "cv",
+    "curriculum vitae",
+    "download resume",
+    "download cv",
+    "i want to see his resume",
+    "give me his resume",
+    "his resume",
+    "his CV",
+    "I want to download his resume",
+    "take me through his resume",
+  ],
+  github: [
+    "github",
+    "git",
+    "code",
+    "repository",
+    "repos",
+    "source code",
+    "i want to check his github profile",
+    "take me through his github repos",
+    "take me to his github account",
+  ],
+  email: [
+    "email",
+    "mail",
+    "send email",
+    "e-mail",
+    "gmail",
+    "i want to send him a email",
+    "his email",
+    "his mail id",
+    "his email id ",
+    "his email account",
+    "i want to connect to him with email",
+    "what is his email",
+    "what is his email id",
+    "what is his mail id",
+  ],
+  linkedin: [
+    "linkedin",
+    "professional network",
+    "connect linkedin",
+    "i want to check his linkedin account",
+    "i want to check his linkedin profile",
+    "what is his linkedin profile",
+    "take me to his linkedin account",
+    "show me his linkedin profile",
+  ],
+  languages: [
+    "languages",
+    "speak",
+    "linguistic",
+    "communication",
+    "hindi",
+    "english",
+    "kannada",
+    "what languages he speaks",
+    "what all languages he know",
+    "which language he speaks",
+    "which languages he is proficient with ",
+  ],
+  BMI_info: ["height", "length", "body type", "BMI", "tall", "physical", "what is his height", "his height"],
+  birthday_info: [
+    "birthday",
+    "birth day",
+    "bday",
+    "born year",
+    "age",
+    "birth date",
+    "his birthday",
+    "what is his birthday",
+    "tell me about his birthday",
+    "tell me about his born date",
+    "what is his birth date",
+  ],
 }
 
 // Links database
@@ -196,7 +312,11 @@ const LipSyncAvatar = ({
   isListening,
   isSpeaking,
   isMuted,
-}: { isListening: boolean; isSpeaking: boolean; isMuted: boolean }) => {
+}: {
+  isListening: boolean
+  isSpeaking: boolean
+  isMuted: boolean
+}) => {
   const [mouthScale, setMouthScale] = useState(1)
   const animationRef = useRef<number>()
 
@@ -345,13 +465,13 @@ export default function ChatBot() {
 
   // Create Fuse instance for fuzzy search
   const fuse = useMemo(() => {
-    type Doc = { id: string; category: string; text: string; keywords?: string }
+    type Doc = { id: string; category: string; text: string; keywords: string }
     const docs: Doc[] = (Object.entries(responses) as [string, string[]][]).flatMap(([category, arr]) =>
       arr.map((text, idx) => ({
         id: `${category}-${idx}`,
         category,
         text,
-        keywords: (keywordMap as Record<string, string[]>)?.[category]?.join(" ") ?? "",
+        keywords: keywordMap[category]?.join(" ") ?? "",
       })),
     )
 
@@ -362,7 +482,7 @@ export default function ChatBot() {
         { name: "text", weight: 0.1 },
       ],
       includeScore: true,
-      threshold: 0.4, // Slightly more lenient for better matching
+      threshold: 0.4,
       ignoreLocation: true,
       minMatchCharLength: 2,
       findAllMatches: true,
@@ -387,7 +507,7 @@ export default function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  // Enhanced function to find best matching response using Fuse.js
+  // Enhanced function to find best matching response using multiple strategies
   const findBestResponse = (
     userInput: string,
   ): {
@@ -400,128 +520,106 @@ export default function ChatBot() {
     const input = userInput.trim().toLowerCase()
     if (!input) return { text: responses.default[Math.floor(Math.random() * responses.default.length)] }
 
-    // Enhanced explicit-intent short-circuit for high-value intents
-    const explicitMap: Record<string, string> = {
-      resume: "resume",
-      cv: "resume",
-      github: "github",
-      repo: "github",
-      email: "email",
-      mail: "email",
-      linkedin: "linkedin",
-      contact: "contact",
-      project: "projects",
-      projects: "projects",
+    console.log("🔍 Processing input:", input)
+
+    // Strategy 1: Direct keyword matching (most reliable)
+    let bestMatch = "default"
+    let maxMatches = 0
+    let matchedKeywords: string[] = []
+
+    Object.entries(keywordMap).forEach(([category, keywords]) => {
+      const matches = keywords.filter((keyword) => {
+        const keywordLower = keyword.toLowerCase()
+        return input.includes(keywordLower)
+      })
+
+      if (matches.length > maxMatches) {
+        maxMatches = matches.length
+        bestMatch = category
+        matchedKeywords = matches
+      }
+    })
+
+    console.log("🎯 Direct keyword match:", bestMatch, "Matches:", maxMatches, "Keywords:", matchedKeywords)
+
+    // Strategy 2: Enhanced explicit word detection
+    const explicitMatches: Record<string, string> = {
       education: "education",
+      educational: "education",
+      educate: "education",
       degree: "education",
       college: "education",
       university: "education",
       school: "education",
       academic: "education",
       qualification: "education",
+      btech: "education",
+      "b.tech": "education",
+      bachelor: "education",
+      graduation: "education",
+      cgpa: "education",
+      institute: "education",
+      pesitm: "education",
+      resume: "resume",
+      cv: "resume",
+      github: "github",
+      repo: "github",
+      repository: "github",
+      email: "email",
+      mail: "email",
+      linkedin: "linkedin",
+      contact: "contact",
+      project: "projects",
+      projects: "projects",
+      skill: "skills",
+      skills: "skills",
+      experience: "experience",
+      work: "experience",
+      job: "experience",
+      career: "experience",
     }
 
-    for (const token of Object.keys(explicitMap)) {
-      if (input.includes(token)) {
-        const cat = explicitMap[token]
-        const responseText = (responses as any)[cat]?.[0] ?? responses.default[0]
-        switch (cat) {
-          case "resume":
-            return { text: responseText, link: links.resume, linkText: "📄 Download Resume" }
-          case "github":
-            return { text: responseText, link: links.github, linkText: "🔗 View GitHub Profile" }
-          case "email":
-            return { text: responseText, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
-          case "linkedin":
-            return { text: responseText, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
-          case "contact":
-            return {
-              text: `${responseText}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
-              link: links.email,
-              linkText: "📧 Send Email",
-              additionalLinks: [
-                { url: links.phone, text: "📱 Call Now" },
-                { url: links.linkedin, text: "💼 LinkedIn Profile" },
-                { url: links.github, text: "🔗 GitHub Profile" },
-              ],
-            }
-          case "projects":
-            return { text: responseText, isProjectRedirect: true }
-          case "education":
-            return { text: responseText }
-        }
-      }
-    }
-
-    // Fuse fuzzy search with improved scoring
-    const results = fuse.search(input, { limit: 10 })
-    console.log("Search results for:", input, results) // Debug log
-
-    if (results.length > 0 && typeof results[0].score === "number" && results[0].score <= 0.6) {
-      const matched = results[0].item
-      const category = matched.category
-      const candidate = (responses as any)[category] ?? responses.default
-      const chosen = candidate[Math.floor(Math.random() * candidate.length)]
-
-      console.log("Matched category:", category, "Score:", results[0].score) // Debug log
-
-      // Reuse same linking logic for categories that need links
-      switch (category) {
-        case "resume":
-          return { text: chosen, link: links.resume, linkText: "📄 Download Resume" }
-        case "github":
-          return { text: chosen, link: links.github, linkText: "🔗 View GitHub Profile" }
-        case "email":
-          return { text: chosen, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
-        case "linkedin":
-          return { text: chosen, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
-        case "contact":
-          return {
-            text: `${chosen}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
-            link: links.email,
-            linkText: "📧 Send Email",
-            additionalLinks: [
-              { url: links.phone, text: "📱 Call Now" },
-              { url: links.linkedin, text: "💼 LinkedIn Profile" },
-              { url: links.github, text: "🔗 GitHub Profile" },
-            ],
-          }
-        case "projects":
-          return { text: chosen, isProjectRedirect: true }
-        default:
-          return { text: chosen }
-      }
-    }
-
-    // Enhanced fallback: robust keyword count with better scoring
-    let bestMatch = "default"
-    let maxMatches = 0
-    Object.entries(keywordMap).forEach(([category, keywords]) => {
-      const matches = keywords.filter((k) => input.includes(k.toLowerCase())).length
-      if (matches > maxMatches) {
-        maxMatches = matches
+    // Check for explicit matches
+    for (const [word, category] of Object.entries(explicitMatches)) {
+      if (input.includes(word)) {
+        console.log("✅ Explicit match found:", word, "->", category)
         bestMatch = category
+        maxMatches = 10
+        break
       }
-    })
+    }
 
-    console.log("Fallback matched category:", bestMatch, "Matches:", maxMatches) // Debug log
+    // Strategy 3: Fuzzy search as fallback
+    if (maxMatches === 0) {
+      console.log("🔄 Trying fuzzy search...")
+      const results = fuse.search(input, { limit: 5 })
+      console.log("🔍 Fuzzy search results:", results)
 
-    const fallbackArr = (responses as any)[bestMatch] ?? responses.default
-    const fallbackText = fallbackArr[Math.floor(Math.random() * fallbackArr.length)]
+      if (results.length > 0 && typeof results[0].score === "number" && results[0].score <= 0.6) {
+        bestMatch = results[0].item.category
+        console.log("🎯 Fuzzy match:", bestMatch, "Score:", results[0].score)
+      }
+    }
 
-    // Apply same linking logic for fallback results
+    console.log("🏆 Final category:", bestMatch)
+
+    // Get response text
+    const responseArray = (responses as any)[bestMatch] ?? responses.default
+    const responseText = responseArray[Math.floor(Math.random() * responseArray.length)]
+
+    // Apply linking logic based on category
     switch (bestMatch) {
       case "resume":
-        return { text: fallbackText, link: links.resume, linkText: "📄 Download Resume" }
+        return { text: responseText, link: links.resume, linkText: "📄 Download Resume" }
       case "github":
-        return { text: fallbackText, link: links.github, linkText: "🔗 View GitHub Profile" }
+        return { text: responseText, link: links.github, linkText: "🔗 View GitHub Profile" }
       case "email":
-        return { text: fallbackText, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
+        return { text: responseText, link: links.email, linkText: "📧 chiragbihani131206@gmail.com" }
       case "linkedin":
-        return { text: fallbackText, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
+        return { text: responseText, link: links.linkedin, linkText: "🔗 Connect on LinkedIn" }
       case "contact":
         return {
-          text: `${fallbackText}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
+          text: `${responseText}\n\n📧 chiragbihani131206@gmail.com\n📱 +91 7726823592`,
           link: links.email,
           linkText: "📧 Send Email",
           additionalLinks: [
@@ -531,9 +629,12 @@ export default function ChatBot() {
           ],
         }
       case "projects":
-        return { text: fallbackText, isProjectRedirect: true }
+        return { text: responseText, isProjectRedirect: true }
+      case "education":
+        console.log("🎓 Returning education response:", responseText)
+        return { text: responseText }
       default:
-        return { text: fallbackText }
+        return { text: responseText }
     }
   }
 
@@ -550,21 +651,20 @@ export default function ChatBot() {
     const cleanText = text.replace(/[📄🔗📧📱💼🎯]/gu, "").replace(/\n/g, " ")
 
     const utterance = new SpeechSynthesisUtterance(cleanText)
-    utterance.rate = 0.85 // Slightly slower for more natural speech
-    utterance.pitch = 1.0 // Natural pitch
+    utterance.rate = 0.85
+    utterance.pitch = 1.0
     utterance.volume = 0.9
 
     // Wait for voices to load and select a more natural voice
     const setVoice = () => {
       const voices = speechSynthesis.getVoices()
 
-      // Prefer female voices for more humanized experience
       const preferredVoices = [
-        voices.find((voice) => voice.name.includes("Samantha")), // macOS
-        voices.find((voice) => voice.name.includes("Zira")), // Windows
+        voices.find((voice) => voice.name.includes("Samantha")),
+        voices.find((voice) => voice.name.includes("Zira")),
         voices.find((voice) => voice.name.includes("Google US English") && voice.name.includes("Female")),
-        voices.find((voice) => voice.name.includes("Microsoft Aria")), // Windows 11
-        voices.find((voice) => voice.name.includes("Karen")), // macOS
+        voices.find((voice) => voice.name.includes("Microsoft Aria")),
+        voices.find((voice) => voice.name.includes("Karen")),
         voices.find((voice) => voice.lang === "en-US" && voice.name.includes("Female")),
         voices.find((voice) => voice.lang === "en-US" && !voice.name.includes("Male")),
         voices.find((voice) => voice.lang.startsWith("en")),
@@ -646,7 +746,6 @@ export default function ChatBot() {
   // Simplified speech recognition without network dependency
   const startListening = () => {
     if (!voiceSupported) {
-      // Fallback: Show a simple prompt for manual input
       const userInput = prompt("Voice input not available. Please type your question:")
       if (userInput && userInput.trim()) {
         setInput(userInput.trim())
@@ -658,17 +757,15 @@ export default function ChatBot() {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
       const recognition = new SpeechRecognition()
 
-      // Configure for offline/local processing when possible
       recognition.continuous = false
       recognition.interimResults = false
       recognition.lang = "en-US"
       recognition.maxAlternatives = 1
 
-      // Set timeout to prevent hanging
       const timeout = setTimeout(() => {
         recognition.stop()
         setIsListening(false)
-      }, 10000) // 10 second timeout
+      }, 10000)
 
       recognition.onstart = () => {
         setIsListening(true)
@@ -691,11 +788,8 @@ export default function ChatBot() {
       recognition.onerror = (event: any) => {
         clearTimeout(timeout)
         setIsListening(false)
-
-        // Handle errors gracefully without alerts
         console.log("Speech recognition error:", event.error)
 
-        // Fallback to text input
         const userInput = prompt("Voice input failed. Please type your question:")
         if (userInput && userInput.trim()) {
           setInput(userInput.trim())
@@ -707,7 +801,6 @@ export default function ChatBot() {
       console.log("Speech recognition not available:", error)
       setIsListening(false)
 
-      // Fallback to text input
       const userInput = prompt("Voice input not available. Please type your question:")
       if (userInput && userInput.trim()) {
         setInput(userInput.trim())
@@ -719,7 +812,6 @@ export default function ChatBot() {
   const toggleMute = () => {
     setIsMuted(!isMuted)
     if (!isMuted) {
-      // Muting - stop current speech
       speechSynthesis.cancel()
       setIsSpeaking(false)
       currentUtteranceRef.current = null
@@ -736,10 +828,10 @@ export default function ChatBot() {
   // Suggested questions
   const suggestedQuestions = [
     "What is his education?",
-    "Tell me about his skills",
-    "How can I contact him?",
+    "Tell me about his degree",
+    "Where did he study?",
+    "What are his skills?",
     "Show me his projects",
-    "What's his experience?",
   ]
 
   return (
